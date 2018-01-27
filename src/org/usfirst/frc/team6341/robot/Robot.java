@@ -1,12 +1,13 @@
-package org.usfirst.frc.team6341.robot;
+ package org.usfirst.frc.team6341.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,7 +29,13 @@ public class Robot extends IterativeRobot {
 	TalonSRX backLeft = new TalonSRX(3);
 	TalonSRX backRight = new TalonSRX(2);
 	
+	Compressor c = new Compressor(12);
+	Solenoid Jack = new Solenoid(2);
+	Solenoid ReturnJack = new Solenoid(1);
+	JoystickCommands stick2;
 	Joystick stick = new Joystick(0);
+	
+	
 	
 	private void power(double left, double right) {
 			left = -limit(left);
@@ -75,6 +82,8 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		
+		CameraServer.getInstance().startAutomaticCapture();
 	}
 
 	/**
@@ -174,7 +183,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		System.out.println(getSideButton());
+		enableCompressor();
+		enableSolonoid();
+		System.out.println(c.enabled());
+		ReturnJack.set(true);
+		ReturnJack.set(false);
 	}
 	@Override
 	public void teleopPeriodic() 
@@ -210,10 +223,60 @@ public class Robot extends IterativeRobot {
 	}
 
 
+	
+	public void enableCompressor()
+	{
+		if(TwelvePressed())
+		{
+
+			c.setClosedLoopControl(true);
+		}else if(!TwelvePressed())
+		{
+			c.setClosedLoopControl(false);
+		}
+	}
+	public void enableSolonoid() {
+		if(TriggerPressed())
+		{
+			Jack.set(true);
+			Jack.set(false);
+			System.out.println(TriggerPressed());
+		}
+		if(TenPressed())
+		{
+			System.out.println("wiring issue");
+			ReturnJack.set(true);
+			ReturnJack.set(false);
+			System.out.println(TenPressed());
+			
+		} 
+		
+	}
 	public boolean getSideButton() 
 	{
 		boolean joystickButton = stick.getRawButton(5);
 		return joystickButton;
 	
+	}
+	
+	public boolean TwelvePressed()
+	{
+		boolean twelvePressed = stick.getRawButton(12);
+		return twelvePressed;
+	}
+	public boolean NinePressed()
+	{
+		boolean NinePressed = stick.getRawButton(9);
+		return NinePressed;
+	}
+	public boolean TenPressed()
+	{
+		boolean TenPressed = stick.getRawButton(10);
+		return TenPressed;
+	}
+	public boolean TriggerPressed()
+	{
+		boolean triggerPressed = stick.getTrigger();
+		return triggerPressed;
 	}
 }
