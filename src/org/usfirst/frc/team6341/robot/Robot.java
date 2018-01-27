@@ -29,24 +29,10 @@ public class Robot extends IterativeRobot {
 	TalonSRX backLeft = new TalonSRX(3);
 	TalonSRX backRight = new TalonSRX(2);
 	
-	Compressor c = new Compressor(12);
-	Solenoid Jack = new Solenoid(2);
-	Solenoid ReturnJack = new Solenoid(1);
-	JoystickCommands stick2;
-	Joystick stick = new Joystick(0);
+	PneumaticsControl P = new PneumaticsControl();
+	JoystickCommands stick = new JoystickCommands();
+	Joystick stick2 = new Joystick(0);
 	
-	
-	
-	private void power(double left, double right) {
-			left = -limit(left);
-			right = limit(right); // Right motors need to be reversed
-
-			frontLeft.set(ControlMode.PercentOutput, left);
-			backLeft.set(ControlMode.PercentOutput,left);
-			frontRight.set(ControlMode.PercentOutput,right);
-			backRight.set(ControlMode.PercentOutput,right);
-		
-	}
 	
 	private void power(double fl, double fr, double rl, double rr) 
 	{
@@ -120,74 +106,18 @@ public class Robot extends IterativeRobot {
 			break;
 		}
 	}
-
-	/**
-	 * This function is called periodically during operator control
-	 */
 	
-	public void Attempt1() 
-	{
-		
-		double move = stick.getY();
-		double rotate = stick.getTwist();
-		double left,right;
-		
-		if (move == 0 && rotate == 0)
-		{ // No movement
-			power(0, 0);
-			return;
-		}
-		if (rotate == 0) 
-		{ // Moving straight
-			power(move, move);
-			return;
-		}
-
-		if (move > 0.0)
-		{
-			System.out.println("Backward");
-			if (rotate > 0.0) 
-			{
-				left = move - rotate;
-				right = Math.max(move, rotate);
-			}
-			else 
-			{
-				left = Math.max(move, -rotate);
-				right = move + rotate;
-			}
-		} 
-		else 
-		{
-			System.out.println("Foward");
-			if (rotate > 0.0) 
-			{
-				left = move;
-				right = move*(1 + rotate);
-			} 
-			else 
-			{
-				left = move*(1 - rotate);
-				right = move;
-			}
-		}
-		power(left*.1,right*.1);
-		System.out.println("Move:"+move);
-		System.out.println("Rotate" + rotate);
-		System.out.println("Left:"+left);
-		System.out.println("right:" + right);
-		
-	}
+	
 	/**
 	 * This function is called periodically during test mode
 	 */
 	@Override
 	public void testPeriodic() {
-		enableCompressor();
-		enableSolonoid();
-		System.out.println(c.enabled());
-		ReturnJack.set(true);
-		ReturnJack.set(false);
+		P.enableCompressor();
+		P.enableSolonoid();
+		System.out.println(stick.getX());
+		System.out.println(stick.getY());
+		System.out.println(stick.getTwist());
 	}
 	@Override
 	public void teleopPeriodic() 
@@ -201,7 +131,7 @@ public class Robot extends IterativeRobot {
 		double y = stick.getY();
 		double r = stick.getTwist();
 		double FrontLeftSpeed,FrontRightSpeed,RearLeftSpeed,RearRightSpeed;
-		if(!getSideButton())
+		if(!stick.getSideButton())
 		{
 		    FrontLeftSpeed =  x + y + r;
 		    FrontRightSpeed = x - y + r;
@@ -212,11 +142,11 @@ public class Robot extends IterativeRobot {
             System.out.println("FrontRightSpeed:"+ FrontRightSpeed);
             System.out.println(RearLeftSpeed);
             System.out.println(RearRightSpeed);
-		}else if(getSideButton()) {
-			FrontLeftSpeed =  x ;
+		}else if(stick.getSideButton()) {
+			FrontLeftSpeed =  -x ;
 		    FrontRightSpeed = x ;
 		    RearLeftSpeed =  -x ;
-		    RearRightSpeed = -x ;
+		    RearRightSpeed = x ;
 		    
 		    power( FrontLeftSpeed*0.5, FrontRightSpeed*0.5, RearLeftSpeed*0.5, RearRightSpeed*0.5 );
 		}
@@ -224,59 +154,5 @@ public class Robot extends IterativeRobot {
 
 
 	
-	public void enableCompressor()
-	{
-		if(TwelvePressed())
-		{
-
-			c.setClosedLoopControl(true);
-		}else if(!TwelvePressed())
-		{
-			c.setClosedLoopControl(false);
-		}
-	}
-	public void enableSolonoid() {
-		if(TriggerPressed())
-		{
-			Jack.set(true);
-			Jack.set(false);
-			System.out.println(TriggerPressed());
-		}
-		if(TenPressed())
-		{
-			System.out.println("wiring issue");
-			ReturnJack.set(true);
-			ReturnJack.set(false);
-			System.out.println(TenPressed());
-			
-		} 
-		
-	}
-	public boolean getSideButton() 
-	{
-		boolean joystickButton = stick.getRawButton(3);
-		return joystickButton;
 	
-	}
-	
-	public boolean TwelvePressed()
-	{
-		boolean twelvePressed = stick.getRawButton(8);
-		return twelvePressed;
-	}
-	public boolean NinePressed()
-	{
-		boolean NinePressed = stick.getRawButton(9);
-		return NinePressed;
-	}
-	public boolean TenPressed()
-	{
-		boolean TenPressed = stick.getRawButton(10);
-		return TenPressed;
-	}
-	public boolean TriggerPressed()
-	{
-		boolean triggerPressed = stick.getTrigger();
-		return triggerPressed;
-	}
 }

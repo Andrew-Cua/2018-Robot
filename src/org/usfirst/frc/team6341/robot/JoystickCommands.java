@@ -14,14 +14,14 @@ public class JoystickCommands {
 	
 	public boolean getSideButton() 
 	{
-		boolean joystickButton = stick.getRawButton(5);
+		boolean joystickButton = stick.getRawButton(3);
 		return joystickButton;
 	
 	}
 	
 	public boolean TwelvePressed()
 	{
-		boolean twelvePressed = stick.getRawButton(12);
+		boolean twelvePressed = stick.getRawButton(8);
 		return twelvePressed;
 	}
 	public boolean NinePressed()
