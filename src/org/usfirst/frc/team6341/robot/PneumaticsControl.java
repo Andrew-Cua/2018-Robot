@@ -24,9 +24,11 @@ public class PneumaticsControl {
 		{
 
 			c.setClosedLoopControl(true);
+			System.out.println("Number 12:" + stick.TwelvePressed());
 		}else if(!stick.TwelvePressed())
 		{
 			c.setClosedLoopControl(false);
+			System.out.println("Number 12:" + stick.TwelvePressed());
 		}
 	}
 	

@@ -36,8 +36,14 @@ public class JoystickCommands {
 	}
 	public boolean TriggerPressed()
 	{
-		boolean triggerPressed = stick.getTrigger();
-		return triggerPressed;
+	 boolean TriggerPressed = stick.getTrigger();
+	 boolean TriggerState = false;
+	 if(TriggerPressed && !TriggerState) {
+		 TriggerState = true;
+	 }else if(TriggerPressed && TriggerState) {
+		 TriggerState = false;
+	 }
+	 return TriggerState;
 	}
 	public double getY() 
 	{

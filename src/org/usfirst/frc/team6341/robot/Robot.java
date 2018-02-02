@@ -113,11 +113,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		P.enableCompressor();
-		P.enableSolonoid();
-		System.out.println(stick.getX());
-		System.out.println(stick.getY());
-		System.out.println(stick.getTwist());
+		System.out.println("TriggerState:" + stick.TriggerPressed());
+		//P.enableCompressor();
+		//P.enableSolonoid();
+		//System.out.println(stick.getX());
+		//System.out.println(stick.getY());
+		//System.out.println(stick.getTwist());
 	}
 	@Override
 	public void teleopPeriodic() 
@@ -133,20 +134,20 @@ public class Robot extends IterativeRobot {
 		double FrontLeftSpeed,FrontRightSpeed,RearLeftSpeed,RearRightSpeed;
 		if(!stick.getSideButton())
 		{
-		    FrontLeftSpeed =  x + y + r;
-		    FrontRightSpeed = x - y + r;
-		    RearLeftSpeed =  -x + y + r;
-		    RearRightSpeed = -x - y + r;
+		    FrontLeftSpeed =  y ; // y + r - x |Proposed Fix Not Tested | x + y + r | OLD
+		    FrontRightSpeed= -y ; //-y + r - x |Proposed Fix Not Tested | x - y + r | OLD 
+		    RearLeftSpeed =   y ; // y + r + x |Proposed Fix Not Tested |-x + y + r | OLD
+		    RearRightSpeed = -y ; //-y + r + x |Proposed Fix Not Tested |- x -y + r | OLD
             power( FrontLeftSpeed*0.5, FrontRightSpeed*0.5, RearLeftSpeed*0.5, RearRightSpeed*0.5 );
             System.out.println("FrontLeftSpeed:" + FrontLeftSpeed);
             System.out.println("FrontRightSpeed:"+ FrontRightSpeed);
             System.out.println(RearLeftSpeed);
             System.out.println(RearRightSpeed);
 		}else if(stick.getSideButton()) {
-			FrontLeftSpeed =  -x ;
-		    FrontRightSpeed = x ;
-		    RearLeftSpeed =  -x ;
-		    RearRightSpeed = x ;
+			FrontLeftSpeed  = -x ;
+		    FrontRightSpeed = -x ;
+		    RearLeftSpeed   = x ;
+		    RearRightSpeed  = x ;
 		    
 		    power( FrontLeftSpeed*0.5, FrontRightSpeed*0.5, RearLeftSpeed*0.5, RearRightSpeed*0.5 );
 		}
