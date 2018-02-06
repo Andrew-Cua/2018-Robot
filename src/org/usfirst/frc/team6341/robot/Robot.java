@@ -124,7 +124,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() 
 	{
 		//Attempt1();
-		MecCall();
+		MecCallTwo();
 	}
 	
 	public void MecCall() {
@@ -152,6 +152,28 @@ public class Robot extends IterativeRobot {
 		    power( FrontLeftSpeed*0.5, FrontRightSpeed*0.5, RearLeftSpeed*0.5, RearRightSpeed*0.5 );
 		}
 	}
+	public void MecCallTwo() {
+		double x = stick.getX();
+		double y = stick.getY();
+		double r = stick.getTwist();
+		
+		double frontLeftPwr, frontRightPwr, backLeftPwr, backRightPwr;
+		if(!stick.getSideButton()) {
+		frontLeftPwr  =  y + r + x;//OLD| y + r - x|NEW|y + r + x|
+		frontRightPwr = -y - r - x;//OLD|-y + r - x|NEW|y - r - x|
+		backLeftPwr   =  y + r - x;//OLD| y + r + x|NEW|y + r - x|
+		backRightPwr  = -y - r + x;//OLD|-y + r + x|NEW|y - r + x|
+		power( frontLeftPwr*0.5, frontRightPwr*0.5, backLeftPwr*0.5, backRightPwr*0.5 );
+	
+		}else if(stick.getSideButton()){
+			frontLeftPwr = x;
+			frontRightPwr = -x;
+			backLeftPwr = -x;
+			backRightPwr = x;
+			power( frontLeftPwr*0.5, frontRightPwr*0.5, backLeftPwr*0.5, backRightPwr*0.5 );
+		}
+	}
+	
 
 
 	
