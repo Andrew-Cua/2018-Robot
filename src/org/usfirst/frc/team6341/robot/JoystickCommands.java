@@ -11,6 +11,12 @@ public class JoystickCommands {
 	
 	Joystick stick = new Joystick(0);
 	
+	public boolean getB() 
+	{
+		boolean bButton = stick.getRawButton(2);
+		return bButton;
+	}
+	
 	
 	public boolean getSideButton() 
 	{
@@ -55,9 +61,9 @@ public class JoystickCommands {
 		double x = stick.getX();
 		return x;
 	}
-	public double getTwist() 
-	{
-		double twist = stick.getTwist();
-		return twist;
+	public double getRX() {
+		double RX = stick.getRawAxis(4);
+		return RX;
 	}
+	
 }

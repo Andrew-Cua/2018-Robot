@@ -24,17 +24,17 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	
-	TalonSRX frontLeft = new TalonSRX(1);
-	TalonSRX frontRight = new TalonSRX(0);
-	TalonSRX backLeft = new TalonSRX(3);
-	TalonSRX backRight = new TalonSRX(2);
+	TalonSRX backRight = new TalonSRX(1); //frontleft //frontRight //backLeft // backRight
+	TalonSRX backLeft = new TalonSRX(0);//frontRight
+	TalonSRX frontRight = new TalonSRX(3);//backleft
+	TalonSRX frontLeft = new TalonSRX(2);//backright
 	
 	PneumaticsControl P = new PneumaticsControl();
 	JoystickCommands stick = new JoystickCommands();
 	Joystick stick2 = new Joystick(0);
 	
 	
-	private void power(double fl, double fr, double rl, double rr) 
+	private void power(double rl, double rr, double fl, double fr) 
 	{
 		fl = limit( fl );
 		fr = limit( fr );
@@ -44,10 +44,10 @@ public class Robot extends IterativeRobot {
 		//rl = -rl;
 		
 
-		frontLeft.set( ControlMode.PercentOutput, fl );
-		backLeft.set( ControlMode.PercentOutput, rl );
-		frontRight.set( ControlMode.PercentOutput, fr );
 		backRight.set( ControlMode.PercentOutput, rr );
+		frontRight.set( ControlMode.PercentOutput, fr );
+		backLeft.set( ControlMode.PercentOutput, rl );
+		frontLeft.set( ControlMode.PercentOutput, fl );
 	}
 	
 	protected double limit(double value) {
@@ -113,12 +113,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		System.out.println("TriggerState:" + stick.TriggerPressed());
-		//P.enableCompressor();
-		//P.enableSolonoid();
-		//System.out.println(stick.getX());
-		//System.out.println(stick.getY());
-		//System.out.println(stick.getTwist());
+		System.out.println(stick.getRX());
+		System.out.println(stick.getX());
 	}
 	@Override
 	public void teleopPeriodic() 
@@ -130,7 +126,7 @@ public class Robot extends IterativeRobot {
 	public void MecCall() {
 		double x = stick.getX();
 		double y = stick.getY();
-		double r = stick.getTwist();
+		double r = stick.getRX();
 		double FrontLeftSpeed,FrontRightSpeed,RearLeftSpeed,RearRightSpeed;
 		if(!stick.getSideButton())
 		{
@@ -144,9 +140,9 @@ public class Robot extends IterativeRobot {
             System.out.println(RearLeftSpeed);
             System.out.println(RearRightSpeed);
 		}else if(stick.getSideButton()) {
-			FrontLeftSpeed  = -x ;
+			FrontLeftSpeed  = x ;
 		    FrontRightSpeed = -x ;
-		    RearLeftSpeed   = x ;
+		    RearLeftSpeed   = -x ;
 		    RearRightSpeed  = x ;
 		    
 		    power( FrontLeftSpeed*0.5, FrontRightSpeed*0.5, RearLeftSpeed*0.5, RearRightSpeed*0.5 );
@@ -155,22 +151,28 @@ public class Robot extends IterativeRobot {
 	public void MecCallTwo() {
 		double x = stick.getX();
 		double y = stick.getY();
-		double r = stick.getTwist();
+		double r = stick.getRX();
 		
 		double frontLeftPwr, frontRightPwr, backLeftPwr, backRightPwr;
-		if(!stick.getSideButton()) {
-		frontLeftPwr  =  y + r + x;//OLD| y + r - x|NEW|y + r + x|
-		frontRightPwr = -y - r - x;//OLD|-y + r - x|NEW|y - r - x|
-		backLeftPwr   =  y + r - x;//OLD| y + r + x|NEW|y + r - x|
-		backRightPwr  = -y - r + x;//OLD|-y + r + x|NEW|y - r + x|
-		power( frontLeftPwr*0.5, frontRightPwr*0.5, backLeftPwr*0.5, backRightPwr*0.5 );
+		if(!stick.getSideButton() && !stick.getB()) {
+		backRightPwr  =  y - x + r;//OLD| y + r - x|NEW|y + r + x|//frontleft 
+		backLeftPwr = -y - x + r;//OLD|-y + r - x|NEW|y - r - x|//frontRight
+		frontRightPwr   =  y + x + r;//OLD| y + r + x|NEW|y + r - x|//backLeft 
+		frontLeftPwr  = -y + x + r;//OLD|-y + r + x|NEW|y - r + x|//backRight
+		power( backLeftPwr*0.5, backRightPwr*0.5, frontLeftPwr*0.5, frontRightPwr*0.5 );
 	
-		}else if(stick.getSideButton()){
-			frontLeftPwr = x;
-			frontRightPwr = -x;
-			backLeftPwr = -x;
-			backRightPwr = x;
-			power( frontLeftPwr*0.5, frontRightPwr*0.5, backLeftPwr*0.5, backRightPwr*0.5 );
+		}else if(stick.getB()){
+			backRightPwr =  -0.5;
+			backLeftPwr = -0.5;
+			frontRightPwr =   0.5;
+			frontLeftPwr =  0.5;
+			power( backLeftPwr, backRightPwr, frontLeftPwr, frontRightPwr );
+		}else if(stick.getSideButton()) {
+			backRightPwr = 0.5;
+			backLeftPwr = 0.5;
+			frontRightPwr = -0.5;
+			frontLeftPwr = -0.5;
+			power( backLeftPwr, backRightPwr, frontLeftPwr, frontRightPwr );
 		}
 	}
 	
