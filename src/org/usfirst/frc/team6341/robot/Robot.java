@@ -25,37 +25,16 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	
-	TalonSRX backRight = new TalonSRX(1); //frontleft //frontRight //backLeft // backRight
-	TalonSRX backLeft = new TalonSRX(0);//frontRight
-	TalonSRX frontRight = new TalonSRX(3);//backleft
-	TalonSRX frontLeft = new TalonSRX(2);//backright
+	
 	//led driver
-	Spark ledDriver = new Spark(1);
+	Spark ledDriver; 
 	
-	PneumaticsControl P = new PneumaticsControl();
-	JoystickCommands stick = new JoystickCommands();
-	Joystick stick2 = new Joystick(0);
-	
-	
-	private void power(double rl, double rr, double fl, double fr) 
-	{
-		fl = limit( fl );
-		fr = limit( fr );
-		rl = limit( rl );
-		rr = limit( rr );
-		//fl = -fl;
-		//rl = -rl;
-		
+	PneumaticsControl P;
+	JoystickCommands stick; 
 
-		backRight.set( ControlMode.PercentOutput, rr );
-		frontRight.set( ControlMode.PercentOutput, fr );
-		backLeft.set( ControlMode.PercentOutput, rl );
-		frontLeft.set( ControlMode.PercentOutput, fl );
-	}
 	
-	protected double limit(double value) {
-		return Math.min(1, Math.max(value, -1));
-	}
+	DriveCommands Drive;
+	
 	
 	//Drive functions
 	
@@ -71,6 +50,12 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		
+		Drive = new DriveCommands(1, 0, 3, 2);
+		
+		P = new PneumaticsControl();
+		
+		stick = new JoystickCommands();
 		
 		CameraServer.getInstance().startAutomaticCapture();
 	}
@@ -116,18 +101,16 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		System.out.println(stick.getRX());
-		System.out.println(stick.getX());
-		ledDriver.set(stick.getY());
+			System.out.println(stick.getPOV());
+		
 	}
 	@Override
 	public void teleopPeriodic() 
 	{
-		//Attempt1();
-		MecCallTwo();
+		Drive.MecanumDrive();
 	}
 	
-	public void MecCall() {
+	/*public void MecCall() {
 		double x = stick.getX();
 		double y = stick.getY();
 		double r = stick.getRX();
@@ -153,36 +136,12 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	public void MecCallTwo() {
-		double x = stick.getX();
-		double y = stick.getY();
-		double r = stick.getRX();
 		
-		double frontLeftPwr, frontRightPwr, backLeftPwr, backRightPwr;
-		if(!stick.getSideButton() && !stick.getB()) {
-		backRightPwr  =  y - x + r;//OLD| y + r - x|NEW|y + r + x|//frontleft 
-		backLeftPwr = -y - x + r;//OLD|-y + r - x|NEW|y - r - x|//frontRight
-		frontRightPwr   =  y + x + r;//OLD| y + r + x|NEW|y + r - x|//backLeft 
-		frontLeftPwr  = -y + x + r;//OLD|-y + r + x|NEW|y - r + x|//backRight
-		ledDriver.set(stick.getY());
-		power( backLeftPwr*0.5, backRightPwr*0.5, frontLeftPwr*0.5, frontRightPwr*0.5 );
-	
-		}else if(stick.getB()){
-			backRightPwr =  -0.5;
-			backLeftPwr = -0.5;
-			frontRightPwr =   0.5;
-			frontLeftPwr =  0.5;
-			power( backLeftPwr, backRightPwr, frontLeftPwr, frontRightPwr );
-		}else if(stick.getSideButton()) {
-			backRightPwr = 0.5;
-			backLeftPwr = 0.5;
-			frontRightPwr = -0.5;
-			frontLeftPwr = -0.5;
-			power( backLeftPwr, backRightPwr, frontLeftPwr, frontRightPwr );
-		}
+		} */
 	}
 	
 
 
 	
 	
-}
+

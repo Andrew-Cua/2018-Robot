@@ -30,16 +30,19 @@ public class JoystickCommands {
 		boolean twelvePressed = stick.getRawButton(8);
 		return twelvePressed;
 	}
+	
 	public boolean NinePressed()
 	{
 		boolean NinePressed = stick.getRawButton(9);
 		return NinePressed;
 	}
+	
 	public boolean TenPressed()
 	{
 		boolean TenPressed = stick.getRawButton(10);
 		return TenPressed;
 	}
+	
 	public boolean TriggerPressed()
 	{
 	 boolean TriggerPressed = stick.getTrigger();
@@ -51,19 +54,28 @@ public class JoystickCommands {
 	 }
 	 return TriggerState;
 	}
+	
 	public double getY() 
 	{
 		double y = stick.getY();
 		return y;
 	}
+	
 	public double getX()
 	{
 		double x = stick.getX();
 		return x;
 	}
+	
 	public double getRX() {
 		double RX = stick.getRawAxis(4);
 		return RX;
+	}
+	
+	public double getPOV()
+	{
+		double POVstate = stick.getPOV();
+		return POVstate;
 	}
 	
 }
