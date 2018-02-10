@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,6 +29,8 @@ public class Robot extends IterativeRobot {
 	TalonSRX backLeft = new TalonSRX(0);//frontRight
 	TalonSRX frontRight = new TalonSRX(3);//backleft
 	TalonSRX frontLeft = new TalonSRX(2);//backright
+	//led driver
+	Spark ledDriver = new Spark(1);
 	
 	PneumaticsControl P = new PneumaticsControl();
 	JoystickCommands stick = new JoystickCommands();
@@ -115,6 +118,7 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		System.out.println(stick.getRX());
 		System.out.println(stick.getX());
+		ledDriver.set(stick.getY());
 	}
 	@Override
 	public void teleopPeriodic() 
@@ -159,6 +163,7 @@ public class Robot extends IterativeRobot {
 		backLeftPwr = -y - x + r;//OLD|-y + r - x|NEW|y - r - x|//frontRight
 		frontRightPwr   =  y + x + r;//OLD| y + r + x|NEW|y + r - x|//backLeft 
 		frontLeftPwr  = -y + x + r;//OLD|-y + r + x|NEW|y - r + x|//backRight
+		ledDriver.set(stick.getY());
 		power( backLeftPwr*0.5, backRightPwr*0.5, frontLeftPwr*0.5, frontRightPwr*0.5 );
 	
 		}else if(stick.getB()){
