@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot {
 		
 		Drive = new DriveCommands(1, 0, 3, 2);
 		
-		P = new PneumaticsControl();
+		//P = new PneumaticsControl();
 		
 		stick = new JoystickCommands();
 		
