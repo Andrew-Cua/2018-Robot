@@ -31,6 +31,9 @@ public class Robot extends IterativeRobot {
 	
 	PneumaticsControl P;
 	JoystickCommands stick; 
+	
+	ElevatorCommands Elevator;
+	IntakeCommands Intake;
 
 	
 	DriveCommands Drive;
@@ -58,6 +61,8 @@ public class Robot extends IterativeRobot {
 		stick = new JoystickCommands();
 		
 		CameraServer.getInstance().startAutomaticCapture();
+		Elevator = new ElevatorCommands();
+		Intake = new IntakeCommands();
 	}
 
 	/**
@@ -108,6 +113,8 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() 
 	{
 		Drive.MecanumDrive();
+		Elevator.ActuateElevator();
+		Intake.ControlIntake();
 	}
 	
 	/*public void MecCall() {

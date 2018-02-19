@@ -77,5 +77,13 @@ public class JoystickCommands {
 		double POVstate = stick.getPOV();
 		return POVstate;
 	}
+	public boolean R1() {
+		boolean R1Pressed = stick.getRawButton(6);//Replace
+		return R1Pressed;
+	}
+	public boolean L1() {
+		boolean L1Pressed = stick.getRawButton(6);//Replace
+		return L1Pressed;
+	}
 	
 }
