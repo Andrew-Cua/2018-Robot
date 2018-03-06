@@ -27,17 +27,17 @@ public class ElevatorCommands {
 		POVangle = driveStick.getPOV();
 		if(POVangle == 0.0D && !topLimit.get())
 		{
-			ElevatorMotor.set(ControlMode.PercentOutput, -0.85);
+			ElevatorMotor.set(ControlMode.PercentOutput, 1);
 		}else if(POVangle == 180.0D && !bottomLimit.get())
 		{
-			ElevatorMotor.set(ControlMode.PercentOutput, 0.85);
-		}else if(POVangle == 0.0D && topLimit.get() == true) 
+			ElevatorMotor.set(ControlMode.PercentOutput, -1);
+		}else if(POVangle == 0.0D && topLimit.get()) 
 		{
 			ElevatorMotor.set(ControlMode.PercentOutput, 0);
-		}else if(POVangle == 180.0D && bottomLimit.get() == true)
+		}else if(POVangle == 180.0D && bottomLimit.get())
 		{
 			ElevatorMotor.set(ControlMode.PercentOutput, 0);
-		}else ElevatorMotor.set(ControlMode.PercentOutput, 0);
+		}
 	}
 	
 

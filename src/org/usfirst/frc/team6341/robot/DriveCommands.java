@@ -3,6 +3,8 @@ package org.usfirst.frc.team6341.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Timer;
+
 public class DriveCommands {
 	
 	TalonSRX backRight, backLeft, frontRight, frontLeft;
@@ -46,7 +48,6 @@ public class DriveCommands {
 			frontLeftPwr  = -y + x + r;//OLD|-y + r + x|NEW|y - r + x|//backRight
 			PowSens(backLeftPwr, backRightPwr, frontLeftPwr, frontRightPwr, 2); //DONT GO ABOVE 2!!
 			//power( backLeftPwr, backRightPwr, frontLeftPwr, frontRightPwr);
-			
 	
 		}else if(!driveStick.getSideButton())
 		{
@@ -143,5 +144,96 @@ public class DriveCommands {
 		power( Pwr[0], Pwr[1], Pwr[2], Pwr[3]);
 		
 		
+	}
+	//auto only
+	Timer timer;
+	double move1 = 1.43;
+	double turn1 = .5;
+	double actions1 = move1 + turn1;
+	double move2 = .5;
+	double centermove1 = .715;
+	double centeractions1 = centermove1 + turn1;
+	double centermove2 = 1;
+	double centermove3 = centermove2 + centeractions1;
+	double centeractions2 = centermove3 + centermove1;
+	double centeractions3 = centeractions2 + centermove1;
+	double centeractions4 = centeractions3 + turn1;
+	double moveLastResort = 2;
+	public void moveBack(){
+		power(-0.5, 0.5, -0.5, 0.5);
+	}
+	public void moveForward(){
+		power(0.5, -0.5, 0.5, -0.5);
+	}
+	public void turnLeft(){
+		power(-0.5,-0.5,-0.5,-0.5);
+	}
+	public void turnRight(){
+		power(0.5,0.5,0.5,0.5);
+	}
+	public void Stop(){
+		power(0,0,0,0);
+	} public void StartLeft(){
+		if(timer.get() < move1) {
+			moveForward();
+		} else if(timer.get() > move1 && timer.get() < move1 + turn1) {
+			turnLeft();
+		} else if(timer.get() > actions1 && timer.get() < move2 + actions1) {
+			//insert cube thing
+		}  else {
+			Stop();
+		}
+	} public void StartRight(){
+		if(timer.get() < move1) {
+			moveForward();
+		} else if(timer.get() > move1 && timer.get() < move1 + turn1) {
+			turnLeft();
+		} else if(timer.get() > actions1 && timer.get() < move2 + actions1) {
+			//cube thing
+		} else {
+			Stop();
+		}
+	} public void CenterLeft(){
+		if(timer.get() < centermove1) {
+			moveForward();
+		} else if(timer.get() > centermove1 && timer.get() < centermove1 + turn1) {
+			turnLeft();
+		} else if(timer.get() > centeractions1 && timer.get() < centermove2 + centeractions1) {
+			moveForward();
+		} else if(timer.get() > centermove3 && timer.get() < centermove3 + turn1) {
+			turnRight();
+		} else if(timer.get() > centeractions2 && timer.get() < centeractions2 + centermove1) {
+			moveForward();
+		} else if(timer.get() > centeractions3 && timer.get() < centeractions3 + turn1) {
+			turnLeft();
+		} else if(timer.get() > centeractions4 && timer.get() < centeractions4 + centermove2) {
+			//insert cube thing
+		} else {
+			Stop();
+		}
+	} public void CenterRight(){
+		if(timer.get() < centermove1) {
+			moveForward();
+		} else if(timer.get() > centermove1 && timer.get() < centermove1 + turn1) {
+			turnRight();
+		} else if(timer.get() > centeractions1 && timer.get() < centermove2 + centeractions1) {
+			moveForward();
+		} else if(timer.get() > centermove3 && timer.get() < centermove3 + turn1) {
+			turnLeft();
+		} else if(timer.get() > centeractions2 && timer.get() < centeractions2 + centermove1) {
+			moveForward();
+		} else if(timer.get() > centeractions3 && timer.get() < centeractions3 + turn1) {
+			turnRight();
+		} else if(timer.get() > centeractions4 && timer.get() < centeractions4 + centermove2) {
+			// insert cube thing
+		} else {
+			Stop();
+		}
+	} public void OppositeSide() {
+		if(timer.get() < moveLastResort) {
+			moveForward();
+		} else {
+			Stop();
+		}
 	}
 }
