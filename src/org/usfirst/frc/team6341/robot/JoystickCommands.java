@@ -55,6 +55,12 @@ public class JoystickCommands {
 	 return TriggerState;
 	}
 	
+	public boolean getA()
+	{
+		boolean getA = stick.getRawButton(1);
+		return getA;
+	}
+	
 	public double getY() 
 	{
 		double y = stick.getY();
@@ -82,7 +88,7 @@ public class JoystickCommands {
 		return R1Pressed;
 	}
 	public boolean L1() {
-		boolean L1Pressed = stick.getRawButton(6);//Replace
+		boolean L1Pressed = stick.getRawButton(5);//Replace
 		return L1Pressed;
 	}
 	

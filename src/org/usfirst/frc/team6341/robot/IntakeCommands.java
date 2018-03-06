@@ -25,6 +25,10 @@ public class IntakeCommands {
 		{
 			LeftMotor.set(-1);
 			rightMotor.set(1);
+		}else 
+		{
+			LeftMotor.set(0);
+			rightMotor.set(0);
 		}
 	}
 

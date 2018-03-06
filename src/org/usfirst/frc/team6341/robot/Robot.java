@@ -107,6 +107,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 			System.out.println(stick.getPOV());
+			Intake.ControlIntake();
+			System.out.println(Elevator.topLimit.get());
 		
 	}
 	@Override

@@ -46,6 +46,7 @@ public class DriveCommands {
 			frontLeftPwr  = -y + x + r;//OLD|-y + r + x|NEW|y - r + x|//backRight
 			PowSens(backLeftPwr, backRightPwr, frontLeftPwr, frontRightPwr, 2); //DONT GO ABOVE 2!!
 			//power( backLeftPwr, backRightPwr, frontLeftPwr, frontRightPwr);
+			
 	
 		}else if(!driveStick.getSideButton())
 		{
