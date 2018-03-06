@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,7 +25,7 @@ public class Robot extends IterativeRobot {
 	final String customAuto = "My Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
-	
+	Timer timer;
 	
 	//led driver
 	Spark ledDriver; 
@@ -82,6 +83,8 @@ public class Robot extends IterativeRobot {
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
+		timer = new Timer();
+		timer.start();
 	}
 
 	/**
@@ -107,8 +110,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 			System.out.println(stick.getPOV());
-			Intake.ControlIntake();
-			System.out.println(Elevator.topLimit.get());
 		
 	}
 	@Override
