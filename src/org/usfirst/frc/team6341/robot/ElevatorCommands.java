@@ -13,6 +13,8 @@ public class ElevatorCommands {
 	DigitalInput topLimit;
 	DigitalInput bottomLimit;
 	
+	private double ElevatorMotorValue;
+	
 	public ElevatorCommands()
 	{
 		this.ElevatorMotor = new TalonSRX(10);
@@ -27,16 +29,38 @@ public class ElevatorCommands {
 		POVangle = driveStick.getPOV();
 		if(POVangle == 0.0D && !topLimit.get())
 		{
-			ElevatorMotor.set(ControlMode.PercentOutput, 1);
+			ElevatorMotor.set(ControlMode.PercentOutput, -1);
 		}else if(POVangle == 180.0D && !bottomLimit.get())
 		{
-			ElevatorMotor.set(ControlMode.PercentOutput, -1);
+			ElevatorMotor.set(ControlMode.PercentOutput, 1);
 		}else if(POVangle == 0.0D && topLimit.get()) 
 		{
 			ElevatorMotor.set(ControlMode.PercentOutput, 0);
 		}else if(POVangle == 180.0D && bottomLimit.get())
 		{
 			ElevatorMotor.set(ControlMode.PercentOutput, 0);
+		}else
+		{
+			ElevatorMotor.set(ControlMode.PercentOutput,0);
+		}
+	}
+	
+	public void MoveElevator()
+	{
+		this.ElevatorMotorValue = -driveStick.rightTrigger() + driveStick.leftTrigger();
+		
+		if(ElevatorMotorValue < -0.1 && !topLimit.get())
+		{
+			ElevatorMotor.set(ControlMode.PercentOutput, ElevatorMotorValue);
+		}else if(ElevatorMotorValue > 0.1 && !bottomLimit.get())
+		{
+			ElevatorMotor.set(ControlMode.PercentOutput, ElevatorMotorValue);
+		}else if(ElevatorMotorValue < -0.1  && topLimit.get())
+		{
+			ElevatorMotor.set(ControlMode.PercentOutput, 0);
+		}else if(ElevatorMotorValue > 0.1 && bottomLimit.get())
+		{
+			ElevatorMotor.set(ControlMode.PercentOutput, ElevatorMotorValue);
 		}
 	}
 	

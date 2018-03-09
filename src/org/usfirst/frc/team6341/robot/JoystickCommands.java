@@ -82,8 +82,16 @@ public class JoystickCommands {
 		return R1Pressed;
 	}
 	public boolean L1() {
-		boolean L1Pressed = stick.getRawButton(6);//Replace
+		boolean L1Pressed = stick.getRawButton(5);//Replace
 		return L1Pressed;
 	}
-	
+	public double leftTrigger() {
+		double leftTriggerValue = stick.getRawAxis(2);
+		return leftTriggerValue;
+		
+	}
+	public double rightTrigger() {
+		double rightTriggerValue = stick.getRawAxis(3);
+		return rightTriggerValue;
+	}
 }

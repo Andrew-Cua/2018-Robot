@@ -109,14 +109,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-			System.out.println(stick.getPOV());
+			//System.out.println(stick.getPOV());
+		double value = -stick.rightTrigger() + stick.leftTrigger();
+		System.out.println(value);
+		System.out.println(stick.rightTrigger());
 		
 	}
 	@Override
 	public void teleopPeriodic() 
 	{
 		Drive.MecanumDrive();
-		Elevator.ActuateElevator();
+		Elevator.MoveElevator();
 		Intake.ControlIntake();
 	}
 	
