@@ -12,9 +12,9 @@ public class PneumaticsControl {
 	
 	Compressor c = new Compressor(12);
 	
-	Solenoid Jack = new Solenoid(2);
+	Solenoid launchTreb = new Solenoid(0);//change
 	
-	Solenoid ReturnJack = new Solenoid(1);
+	Solenoid returnTreb = new Solenoid(1);//change
 	
 	JoystickCommands stick = new JoystickCommands();
 	
@@ -35,17 +35,28 @@ public class PneumaticsControl {
 	public void enableSolonoid() {
 		if(stick.TriggerPressed())
 		{
-			Jack.set(true);
-			Jack.set(false);
+			launchTreb.set(true);
+			launchTreb.set(false);
 			System.out.println("trigger:" + stick.TriggerPressed());
 		}
 		if(stick.TenPressed())
 		{
-			ReturnJack.set(true);
-			ReturnJack.set(false);
+			returnTreb.set(true);
+			returnTreb.set(false);
 			System.out.println("Number10:" + stick.TenPressed());
 			
 		} 
 		
+	}
+	public void launchTrebuchet()
+	{
+		
+		launchTreb.set(true);
+	}
+	public void retractTrebuchet()
+	{
+		launchTreb.set(false);
+		returnTreb.set(true);
+		returnTreb.set(false);
 	}
 }

@@ -10,6 +10,8 @@ public class DriveCommands {
 	TalonSRX backRight, backLeft, frontRight, frontLeft;
 	JoystickCommands driveStick;
 	
+	PneumaticsControl P;
+	
 	double x, y, r, POV;
 	
 	double backLeftPwr, backRightPwr, frontLeftPwr, frontRightPwr;
@@ -21,6 +23,7 @@ public class DriveCommands {
 		this.frontRight = new TalonSRX(frontRightID);
 		this.frontLeft = new TalonSRX(frontLeftID);
 		this.driveStick = new JoystickCommands();
+		this.P = new PneumaticsControl();
 		setRamp(0,0);
 	}
 	
@@ -153,12 +156,16 @@ public class DriveCommands {
 	double move2 = .5;
 	double centermove1 = .715;
 	double centeractions1 = centermove1 + turn1;
-	double centermove2 = 1;
+	double centermove2 = 1.25;
 	double centermove3 = centermove2 + centeractions1;
 	double centeractions2 = centermove3 + centermove1;
 	double centeractions3 = centeractions2 + centermove1;
 	double centeractions4 = centeractions3 + turn1;
 	double moveLastResort = 2;
+	double scaleback = .5;
+	double scalebehindus = centeractions4 + scaleback;
+	double centeractions5 = scalebehindus + centermove2;
+	double sidestartback = centeractions5 +0.5;
 	public void moveBack(){
 		power(-0.5, 0.5, -0.5, 0.5);
 	}
@@ -173,17 +180,21 @@ public class DriveCommands {
 	}
 	public void Stop(){
 		power(0,0,0,0);
-	} public void StartLeft(){
+	} public void StartLeft(Timer timer){
 		if(timer.get() < move1) {
 			moveForward();
 		} else if(timer.get() > move1 && timer.get() < move1 + turn1) {
 			turnLeft();
-		} else if(timer.get() > actions1 && timer.get() < move2 + actions1) {
-			//insert cube thing
+		} else if(timer.get() > actions1 && timer.get() < .5 + actions1) {
+			moveBack();
+		} else if(timer.get() > sidestartback && timer.get() < sidestartback + 0.5) {
+			//P.launchTrebuchet();
+		} else if(timer.get() > sidestartback + 0.5 && timer.get() < sidestartback + 1) {
+			//P.retractTrebuchet();
 		}  else {
 			Stop();
 		}
-	} public void StartRight(){
+	} public void StartRight(Timer timer){
 		if(timer.get() < move1) {
 			moveForward();
 		} else if(timer.get() > move1 && timer.get() < move1 + turn1) {
@@ -193,7 +204,7 @@ public class DriveCommands {
 		} else {
 			Stop();
 		}
-	} public void CenterLeft(){
+	} public void CenterLeft(Timer timer){
 		if(timer.get() < centermove1) {
 			moveForward();
 		} else if(timer.get() > centermove1 && timer.get() < centermove1 + turn1) {
@@ -206,12 +217,17 @@ public class DriveCommands {
 			moveForward();
 		} else if(timer.get() > centeractions3 && timer.get() < centeractions3 + turn1) {
 			turnLeft();
-		} else if(timer.get() > centeractions4 && timer.get() < centeractions4 + centermove2) {
+		} else if(timer.get() > centeractions4 && timer.get() < centeractions4 + scaleback) {
+			moveBack();
+		} else if(timer.get() > scalebehindus && timer.get() < scalebehindus + centermove2) {
 			//insert cube thing
+			//P.launchTrebuchet();
+		} else if(timer.get() > centeractions5 && timer.get() < centeractions5 + .5) {
+			//P.retractTrebuchet();
 		} else {
 			Stop();
 		}
-	} public void CenterRight(){
+	} public void CenterRight(Timer timer){
 		if(timer.get() < centermove1) {
 			moveForward();
 		} else if(timer.get() > centermove1 && timer.get() < centermove1 + turn1) {
@@ -224,12 +240,18 @@ public class DriveCommands {
 			moveForward();
 		} else if(timer.get() > centeractions3 && timer.get() < centeractions3 + turn1) {
 			turnRight();
-		} else if(timer.get() > centeractions4 && timer.get() < centeractions4 + centermove2) {
-			// insert cube thing
-		} else {
+		} else if(timer.get() > centeractions4 && timer.get() < centeractions4 + scaleback) {
+			moveBack();
+			
+		} else if(timer.get() > scalebehindus && timer.get() < scalebehindus + centermove2) {
+			//insert cube thing
+			//P.launchTrebuchet();
+		} else if(timer.get() > centeractions5 && timer.get() < centeractions5 + .5) {
+			//P.retractTrebuchet();
+		}else {
 			Stop();
 		}
-	} public void OppositeSide() {
+	} public void LastStand(Timer timer) {
 		if(timer.get() < moveLastResort) {
 			moveForward();
 		} else {

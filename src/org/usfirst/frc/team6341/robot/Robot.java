@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -92,16 +93,23 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		switch (autoSelected) {
-		case customAuto:
-			// Put custom auto code here
-			break;
-		case defaultAuto:
-		default:
-			// Put default auto code here
-			break;
+		
+		String gameData;
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		if(gameData.length() > 0)
+		{
+			if(gameData.charAt(0) == 'L')
+			{
+				//from middle left
+				Drive.StartLeft(timer);
+			}else 
+			{
+				//from middle to right
+				Drive.LastStand(timer);
+			}
+			}
 		}
-	}
+	
 	
 	
 	/**
@@ -118,8 +126,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() 
 	{
+		//P.c.setClosedLoopControl(true);
 		Drive.MecanumDrive();
-		Elevator.MoveElevator();
+		Elevator.ActuateElevator();
 		Intake.ControlIntake();
 	}
 	
