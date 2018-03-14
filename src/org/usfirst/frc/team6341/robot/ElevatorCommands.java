@@ -49,19 +49,19 @@ public class ElevatorCommands {
 	{
 		this.ElevatorMotorValue = -driveStick.rightTrigger() + driveStick.leftTrigger();
 		
-		if(ElevatorMotorValue < -0.1 && !topLimit.get())
+		if(ElevatorMotorValue < -0.25 && !topLimit.get())
 		{
 			ElevatorMotor.set(ControlMode.PercentOutput, ElevatorMotorValue);
-		}else if(ElevatorMotorValue > 0.1 && !bottomLimit.get())
+		}else if(ElevatorMotorValue > 0.25 && !bottomLimit.get())
 		{
 			ElevatorMotor.set(ControlMode.PercentOutput, ElevatorMotorValue);
-		}else if(ElevatorMotorValue < -0.1  && topLimit.get())
+		}else if(ElevatorMotorValue < -0.25  && topLimit.get())
 		{
 			ElevatorMotor.set(ControlMode.PercentOutput, 0);
-		}else if(ElevatorMotorValue > 0.1 && bottomLimit.get())
+		}else if(ElevatorMotorValue > 0.25 && bottomLimit.get())
 		{
 			ElevatorMotor.set(ControlMode.PercentOutput, ElevatorMotorValue);
-		}
+		}else ElevatorMotor.set(ControlMode.PercentOutput, 0);
 	}
 	
 

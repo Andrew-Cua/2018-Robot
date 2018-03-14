@@ -29,9 +29,9 @@ public class Robot extends IterativeRobot {
 	Timer timer;
 	
 	//led driver
-	Spark ledDriver; 
+	//Spark ledDriver; 
 	
-	PneumaticsControl P;
+	//PneumaticsControl P;
 	JoystickCommands stick; 
 	
 	ElevatorCommands Elevator;
@@ -39,6 +39,11 @@ public class Robot extends IterativeRobot {
 
 	
 	DriveCommands Drive;
+	
+	//Compressor C = new Compressor(11);
+	
+	//Solenoid jack = new Solenoid(0);
+	//Solenoid returnjack = new Solenoid(1);
 	
 	
 	//Drive functions
@@ -58,7 +63,7 @@ public class Robot extends IterativeRobot {
 		
 		Drive = new DriveCommands(1, 0, 3, 2);
 		
-		//P = new PneumaticsControl();
+		//P = new PneumaticsControl(0);
 		
 		stick = new JoystickCommands();
 		
@@ -80,6 +85,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		String[] autonomousList = {"Left", "Middle", "Right"};
+		SmartDashboard.putStringArray("Auto List", autonomousList);
+		String autoSelected = SmartDashboard.getString("Auto Selector", "None");
 		autoSelected = chooser.getSelected();
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
@@ -94,18 +102,22 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		
+		
+		
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
 		if(gameData.length() > 0)
 		{
 			if(gameData.charAt(0) == 'L')
 			{
-				//from middle left
-				Drive.StartLeft(timer);
-			}else 
+				//If its on the left
+				Drive.Turntesting(timer);
+			}else  
 			{
-				//from middle to right
-				Drive.LastStand(timer);
+				//If its on the right
+				Drive.Turntesting(timer);
+				
 			}
 			}
 		}
@@ -118,9 +130,17 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 			//System.out.println(stick.getPOV());
-		double value = -stick.rightTrigger() + stick.leftTrigger();
-		System.out.println(value);
-		System.out.println(stick.rightTrigger());
+		
+		//P.c.setClosedLoopControl(true);
+		if(stick.getYButton())
+		{
+			//P.launchTrebuchet();
+			System.out.println(stick.getYButton());
+		}else if(stick.getAButton())
+		{
+			//P.retractTrebuchet();
+			System.out.println(stick.getAButton());
+		}
 		
 	}
 	@Override
@@ -128,38 +148,11 @@ public class Robot extends IterativeRobot {
 	{
 		//P.c.setClosedLoopControl(true);
 		Drive.MecanumDrive();
+		//Elevator.ActuateElevator();
+		Elevator.MoveElevator();
 		Elevator.ActuateElevator();
 		Intake.ControlIntake();
 	}
-	
-	/*public void MecCall() {
-		double x = stick.getX();
-		double y = stick.getY();
-		double r = stick.getRX();
-		double FrontLeftSpeed,FrontRightSpeed,RearLeftSpeed,RearRightSpeed;
-		if(!stick.getSideButton())
-		{
-		    FrontLeftSpeed =  y ; // y + r - x |Proposed Fix Not Tested | x + y + r | OLD
-		    FrontRightSpeed= -y ; //-y + r - x |Proposed Fix Not Tested | x - y + r | OLD 
-		    RearLeftSpeed =   y ; // y + r + x |Proposed Fix Not Tested |-x + y + r | OLD
-		    RearRightSpeed = -y ; //-y + r + x |Proposed Fix Not Tested |- x -y + r | OLD
-            power( FrontLeftSpeed*0.5, FrontRightSpeed*0.5, RearLeftSpeed*0.5, RearRightSpeed*0.5 );
-            System.out.println("FrontLeftSpeed:" + FrontLeftSpeed);
-            System.out.println("FrontRightSpeed:"+ FrontRightSpeed);
-            System.out.println(RearLeftSpeed);
-            System.out.println(RearRightSpeed);
-		}else if(stick.getSideButton()) {
-			FrontLeftSpeed  = x ;
-		    FrontRightSpeed = -x ;
-		    RearLeftSpeed   = -x ;
-		    RearRightSpeed  = x ;
-		    
-		    power( FrontLeftSpeed*0.5, FrontRightSpeed*0.5, RearLeftSpeed*0.5, RearRightSpeed*0.5 );
-		}
-	}
-	public void MecCallTwo() {
-		
-		} */
 	}
 	
 

@@ -5,58 +5,48 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class PneumaticsControl {
 
-	public PneumaticsControl() 
+	
+    Compressor c;
+	
+	Solenoid launchTreb;
+	
+	Solenoid returnTreb;
+	
+	JoystickCommands stick;
+	
+	public PneumaticsControl(int CompID) 
 	{
-		
+		c = new Compressor(CompID);
+		launchTreb = new Solenoid(0);
+		returnTreb = new Solenoid(1);
+		stick = new JoystickCommands();
 	}
 	
-	Compressor c = new Compressor(12);
 	
-	Solenoid launchTreb = new Solenoid(0);//change
-	
-	Solenoid returnTreb = new Solenoid(1);//change
-	
-	JoystickCommands stick = new JoystickCommands();
 	
 	public void enableCompressor()
 	{
-		if(stick.TwelvePressed())
+		if(stick.getB())
 		{
 
 			c.setClosedLoopControl(true);
 			System.out.println("Number 12:" + stick.TwelvePressed());
-		}else if(!stick.TwelvePressed())
+		}else if(!stick.getB())
 		{
 			c.setClosedLoopControl(false);
 			System.out.println("Number 12:" + stick.TwelvePressed());
 		}
 	}
 	
-	public void enableSolonoid() {
-		if(stick.TriggerPressed())
-		{
-			launchTreb.set(true);
-			launchTreb.set(false);
-			System.out.println("trigger:" + stick.TriggerPressed());
-		}
-		if(stick.TenPressed())
-		{
-			returnTreb.set(true);
-			returnTreb.set(false);
-			System.out.println("Number10:" + stick.TenPressed());
-			
-		} 
-		
-	}
 	public void launchTrebuchet()
 	{
 		
 		launchTreb.set(true);
+		launchTreb.set(false);
 	}
 	public void retractTrebuchet()
 	{
-		launchTreb.set(false);
-		returnTreb.set(true);
 		returnTreb.set(false);
+		returnTreb.set(true);
 	}
 }

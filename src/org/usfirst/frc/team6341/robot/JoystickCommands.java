@@ -24,6 +24,16 @@ public class JoystickCommands {
 		return joystickButton;
 	
 	}
+	public boolean getYButton()
+	{
+		boolean getYButton = stick.getRawButton(4);
+		return getYButton;
+	}
+	public boolean getAButton()
+	{
+		boolean getAButton = stick.getRawButton(1);
+		return getAButton;
+	}
 	
 	public boolean TwelvePressed()
 	{

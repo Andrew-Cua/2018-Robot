@@ -10,7 +10,7 @@ public class DriveCommands {
 	TalonSRX backRight, backLeft, frontRight, frontLeft;
 	JoystickCommands driveStick;
 	
-	PneumaticsControl P;
+	//PneumaticsControl P;
 	
 	double x, y, r, POV;
 	
@@ -23,7 +23,7 @@ public class DriveCommands {
 		this.frontRight = new TalonSRX(frontRightID);
 		this.frontLeft = new TalonSRX(frontLeftID);
 		this.driveStick = new JoystickCommands();
-		this.P = new PneumaticsControl();
+		//this.P = new PneumaticsControl(11);
 		setRamp(0,0);
 	}
 	
@@ -151,21 +151,22 @@ public class DriveCommands {
 	//auto only
 	Timer timer;
 	double move1 = 1.43;
-	double turn1 = .5;
+	double turn1 = .55;
 	double actions1 = move1 + turn1;
 	double move2 = .5;
 	double centermove1 = .715;
 	double centeractions1 = centermove1 + turn1;
-	double centermove2 = 1.25;
+	double centermove2 = 1.4;
 	double centermove3 = centermove2 + centeractions1;
 	double centeractions2 = centermove3 + centermove1;
 	double centeractions3 = centeractions2 + centermove1;
 	double centeractions4 = centeractions3 + turn1;
-	double moveLastResort = 2;
+	double moveLastResort = 1.65;
 	double scaleback = .5;
 	double scalebehindus = centeractions4 + scaleback;
 	double centeractions5 = scalebehindus + centermove2;
 	double sidestartback = centeractions5 +0.5;
+	double turnaround;
 	public void moveBack(){
 		power(-0.5, 0.5, -0.5, 0.5);
 	}
@@ -211,14 +212,14 @@ public class DriveCommands {
 			turnLeft();
 		} else if(timer.get() > centeractions1 && timer.get() < centermove2 + centeractions1) {
 			moveForward();
-		} else if(timer.get() > centermove3 && timer.get() < centermove3 + turn1) {
+		} else if(timer.get() > centermove3 && timer.get() < centermove3 + turn1 -0.125759) {
 			turnRight();
 		} else if(timer.get() > centeractions2 && timer.get() < centeractions2 + centermove1) {
 			moveForward();
 		} else if(timer.get() > centeractions3 && timer.get() < centeractions3 + turn1) {
 			turnLeft();
 		} else if(timer.get() > centeractions4 && timer.get() < centeractions4 + scaleback) {
-			moveBack();
+			//moveBack();
 		} else if(timer.get() > scalebehindus && timer.get() < scalebehindus + centermove2) {
 			//insert cube thing
 			//P.launchTrebuchet();
@@ -234,14 +235,14 @@ public class DriveCommands {
 			turnRight();
 		} else if(timer.get() > centeractions1 && timer.get() < centermove2 + centeractions1) {
 			moveForward();
-		} else if(timer.get() > centermove3 && timer.get() < centermove3 + turn1) {
+		} else if(timer.get() > centermove3 && timer.get() < centermove3 + turn1 - 0.125759) {
 			turnLeft();
 		} else if(timer.get() > centeractions2 && timer.get() < centeractions2 + centermove1) {
 			moveForward();
 		} else if(timer.get() > centeractions3 && timer.get() < centeractions3 + turn1) {
 			turnRight();
 		} else if(timer.get() > centeractions4 && timer.get() < centeractions4 + scaleback) {
-			moveBack();
+			//moveBack();
 			
 		} else if(timer.get() > scalebehindus && timer.get() < scalebehindus + centermove2) {
 			//insert cube thing
@@ -251,8 +252,40 @@ public class DriveCommands {
 		}else {
 			Stop();
 		}
-	} public void LastStand(Timer timer) {
+	} public void LastStandLeft(Timer timer) {
 		if(timer.get() < moveLastResort) {
+			moveForward();
+		} else if(timer.get() > moveLastResort && timer.get() < moveLastResort + turn1) {
+			turnRight();
+		} else if(timer.get() > moveLastResort + turn1 && timer.get() < moveLastResort + turn1 + 2.5) {
+			moveForward();
+		} else if(timer.get() > moveLastResort + turn1 + 1.2 && timer.get() < moveLastResort + turn1 + 1.2 + turn1) {
+			turnLeft();
+		} else if(timer.get() > moveLastResort + turn1 + 1.2 + turn1 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25) {
+			moveBack();
+		} else if(timer.get() >moveLastResort + turn1 + 1.2 + turn1 + .25 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25 + 0.5) {
+			//P.launchTrebuchet();
+		}else {
+			Stop();
+		}
+	} public void LastStandRight(Timer timer) {
+		if(timer.get() < moveLastResort) {
+			moveForward();
+		} else if(timer.get() > moveLastResort && timer.get() < moveLastResort + turn1) {
+			turnLeft();
+		} else if(timer.get() > moveLastResort + turn1 && timer.get() < moveLastResort + turn1 + 1.2) {
+			moveForward();
+		} else if(timer.get() > moveLastResort + turn1 + 1.2 && timer.get() < moveLastResort + turn1 + 1.2 + turn1) {
+			turnRight();
+		} else if(timer.get() > moveLastResort + turn1 + 1.2 + turn1 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25) {
+			moveBack();
+		} else if(timer.get() >moveLastResort + turn1 + 1.2 + turn1 + .25 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25 + 0.5) {
+			//P.launchTrebuchet();
+		}else {
+			Stop();
+		}
+	} public void Turntesting(Timer timer) {
+		if(timer.get() < 1) {
 			moveForward();
 		} else {
 			Stop();
