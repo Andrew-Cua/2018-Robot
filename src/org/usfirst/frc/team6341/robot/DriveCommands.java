@@ -10,7 +10,7 @@ public class DriveCommands {
 	TalonSRX backRight, backLeft, frontRight, frontLeft;
 	JoystickCommands driveStick;
 	
-	//PneumaticsControl P;
+	PneumaticsControl P;
 	
 	double x, y, r, POV;
 	
@@ -189,9 +189,9 @@ public class DriveCommands {
 		} else if(timer.get() > actions1 && timer.get() < .5 + actions1) {
 			moveBack();
 		} else if(timer.get() > sidestartback && timer.get() < sidestartback + 0.5) {
-			//P.launchTrebuchet();
+			P.launchTrebuchet();
 		} else if(timer.get() > sidestartback + 0.5 && timer.get() < sidestartback + 1) {
-			//P.retractTrebuchet();
+			P.retractTrebuchet();
 		}  else {
 			Stop();
 		}
@@ -199,10 +199,14 @@ public class DriveCommands {
 		if(timer.get() < move1) {
 			moveForward();
 		} else if(timer.get() > move1 && timer.get() < move1 + turn1) {
-			turnLeft();
-		} else if(timer.get() > actions1 && timer.get() < move2 + actions1) {
-			//cube thing
-		} else {
+			turnRight();
+		} else if(timer.get() > actions1 && timer.get() < .5 + actions1) {
+			moveBack();
+		} else if(timer.get() > sidestartback && timer.get() < sidestartback + 0.5) {
+			P.launchTrebuchet();
+		} else if(timer.get() > sidestartback + 0.5 && timer.get() < sidestartback + 1) {
+			P.retractTrebuchet();
+		}  else {
 			Stop();
 		}
 	} public void CenterLeft(Timer timer){
@@ -219,12 +223,12 @@ public class DriveCommands {
 		} else if(timer.get() > centeractions3 && timer.get() < centeractions3 + turn1) {
 			turnLeft();
 		} else if(timer.get() > centeractions4 && timer.get() < centeractions4 + scaleback) {
-			//moveBack();
+			moveBack();
 		} else if(timer.get() > scalebehindus && timer.get() < scalebehindus + centermove2) {
 			//insert cube thing
-			//P.launchTrebuchet();
+			P.launchTrebuchet();
 		} else if(timer.get() > centeractions5 && timer.get() < centeractions5 + .5) {
-			//P.retractTrebuchet();
+			P.retractTrebuchet();
 		} else {
 			Stop();
 		}
@@ -242,33 +246,43 @@ public class DriveCommands {
 		} else if(timer.get() > centeractions3 && timer.get() < centeractions3 + turn1) {
 			turnRight();
 		} else if(timer.get() > centeractions4 && timer.get() < centeractions4 + scaleback) {
-			//moveBack();
-			
+			moveBack();
 		} else if(timer.get() > scalebehindus && timer.get() < scalebehindus + centermove2) {
 			//insert cube thing
-			//P.launchTrebuchet();
+			P.launchTrebuchet();
 		} else if(timer.get() > centeractions5 && timer.get() < centeractions5 + .5) {
-			//P.retractTrebuchet();
+			P.retractTrebuchet();
 		}else {
 			Stop();
 		}
 	} public void LastStandLeft(Timer timer) {
-		if(timer.get() < moveLastResort) {
+		if(timer.get() < moveLastResort) 
+		{
 			moveForward();
-		} else if(timer.get() > moveLastResort && timer.get() < moveLastResort + turn1) {
+		} else if(timer.get() > moveLastResort && timer.get() < moveLastResort + turn1) 
+		{
 			turnRight();
-		} else if(timer.get() > moveLastResort + turn1 && timer.get() < moveLastResort + turn1 + 2.5) {
+		} else if(timer.get() > moveLastResort + turn1 && timer.get() < moveLastResort + turn1 + 2.5) 
+		{
 			moveForward();
-		} else if(timer.get() > moveLastResort + turn1 + 1.2 && timer.get() < moveLastResort + turn1 + 1.2 + turn1) {
+		} else if(timer.get() > moveLastResort + turn1 + 1.2 && timer.get() < moveLastResort + turn1 + 1.2 + turn1)
+	    {
 			turnLeft();
-		} else if(timer.get() > moveLastResort + turn1 + 1.2 + turn1 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25) {
+		} else if(timer.get() > moveLastResort + turn1 + 1.2 + turn1 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25) 
+		{
 			moveBack();
-		} else if(timer.get() >moveLastResort + turn1 + 1.2 + turn1 + .25 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25 + 0.5) {
-			//P.launchTrebuchet();
-		}else {
+		} else if(timer.get() >moveLastResort + turn1 + 1.2 + turn1 + .25 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25 + 0.5) 
+		{
+			P.launchTrebuchet();
+		} else if(timer.get() > moveLastResort + turn1 + 1.2 + turn1 + .25 + 0.5 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25 + 0.5 + 0.5) 
+		{
+			P.retractTrebuchet();
+		}else 
+		{
 			Stop();
 		}
-	} public void LastStandRight(Timer timer) {
+		}
+	public void LastStandRight(Timer timer) {
 		if(timer.get() < moveLastResort) {
 			moveForward();
 		} else if(timer.get() > moveLastResort && timer.get() < moveLastResort + turn1) {
@@ -280,11 +294,13 @@ public class DriveCommands {
 		} else if(timer.get() > moveLastResort + turn1 + 1.2 + turn1 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25) {
 			moveBack();
 		} else if(timer.get() >moveLastResort + turn1 + 1.2 + turn1 + .25 && timer.get() < moveLastResort + turn1 + 1.2 + turn1 + .25 + 0.5) {
-			//P.launchTrebuchet();
+			P.launchTrebuchet();
 		}else {
 			Stop();
-		}
-	} public void Turntesting(Timer timer) {
+	}
+	} 
+	
+	public void Turntesting(Timer timer) {
 		if(timer.get() < 1) {
 			moveForward();
 		} else {

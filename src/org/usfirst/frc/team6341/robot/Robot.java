@@ -27,11 +27,11 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	Timer timer;
-	
+	Compressor c;
 	//led driver
 	//Spark ledDriver; 
 	
-	//PneumaticsControl P;
+	PneumaticsControl P;
 	JoystickCommands stick; 
 	
 	ElevatorCommands Elevator;
@@ -63,13 +63,13 @@ public class Robot extends IterativeRobot {
 		
 		Drive = new DriveCommands(1, 0, 3, 2);
 		
-		//P = new PneumaticsControl(0);
+		P = new PneumaticsControl(0);
 		
 		stick = new JoystickCommands();
 		
 		CameraServer.getInstance().startAutomaticCapture();
 		Elevator = new ElevatorCommands();
-		Intake = new IntakeCommands();
+		Intake = new IntakeCommands(0,1,2);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		
 		
-		
+		P.c.setClosedLoopControl(true);
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
@@ -131,14 +131,16 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 			//System.out.println(stick.getPOV());
 		
-		//P.c.setClosedLoopControl(true);
+		P.enableCompressor();
 		if(stick.getYButton())
 		{
-			//P.launchTrebuchet();
+			//P.expandArms();
+			P.launchTrebuchet();
 			System.out.println(stick.getYButton());
 		}else if(stick.getAButton())
 		{
-			//P.retractTrebuchet();
+			//P.retractArms();
+			P.retractTrebuchet();
 			System.out.println(stick.getAButton());
 		}
 		
@@ -150,7 +152,7 @@ public class Robot extends IterativeRobot {
 		Drive.MecanumDrive();
 		//Elevator.ActuateElevator();
 		Elevator.MoveElevator();
-		Elevator.ActuateElevator();
+		//Elevator.ActuateElevator();
 		Intake.ControlIntake();
 	}
 	}

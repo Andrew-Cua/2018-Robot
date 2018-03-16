@@ -12,14 +12,19 @@ public class PneumaticsControl {
 	
 	Solenoid returnTreb;
 	
+	Solenoid expandArms;
+	Solenoid retractArms;
+	
 	JoystickCommands stick;
 	
 	public PneumaticsControl(int CompID) 
 	{
-		c = new Compressor(CompID);
-		launchTreb = new Solenoid(0);
-		returnTreb = new Solenoid(1);
-		stick = new JoystickCommands();
+		this.c = new Compressor(CompID);
+		this.launchTreb = new Solenoid(0);
+		this.returnTreb = new Solenoid(1);
+		this.expandArms = new Solenoid(3);
+		this.retractArms = new Solenoid(2);
+		this.stick = new JoystickCommands();
 	}
 	
 	
@@ -42,11 +47,22 @@ public class PneumaticsControl {
 	{
 		
 		launchTreb.set(true);
-		launchTreb.set(false);
+		returnTreb.set(false);
+		//returnTreb.set(true);
 	}
 	public void retractTrebuchet()
 	{
-		returnTreb.set(false);
+		launchTreb.set(false);
 		returnTreb.set(true);
+	}
+	public void expandArms()
+	{
+		expandArms.set(true);
+		retractArms.set(false);
+	}
+	public void retractArms()
+	{
+		retractArms.set(true);
+		expandArms.set(true);
 	}
 }
